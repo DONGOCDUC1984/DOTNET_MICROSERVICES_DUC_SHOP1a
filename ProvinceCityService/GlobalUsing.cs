@@ -1,0 +1,9 @@
+﻿global using CommonService.Models;
+global using CommonService.Models.DTO;
+global using ProvinceCityService.Data;
+global using ProvinceCityService.Repository.Interface;
+global using ProvinceCityService.Repository.Implementation;
+global using ProvinceCityService.Kafka;
+global using Microsoft.EntityFrameworkCore;
+global using Confluent.Kafka;
+global using Newtonsoft.Json;

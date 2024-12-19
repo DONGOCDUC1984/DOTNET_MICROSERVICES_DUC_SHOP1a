@@ -1,0 +1,392 @@
+{
+  "Routes": [
+    // Authentication, Authorization
+    // Login
+    {
+      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamPathTemplate": "/api/authenticate/login",
+      "DownstreamPathTemplate": "/api/authenticate/login",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5000
+        }
+      ]
+    },
+    // Register
+    {
+      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamPathTemplate": "/api/authenticate/register",
+      "DownstreamPathTemplate": "/api/authenticate/register",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5000
+        }
+      ]
+    },
+
+    // Business
+    // Product
+    {
+      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamPathTemplate": "/api/product",
+      "DownstreamPathTemplate": "/api/product",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ]
+
+    },
+
+    {
+      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamPathTemplate": "/api/product/{id}",
+      "DownstreamPathTemplate": "/api/product/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ]
+    },
+    {
+      "UpstreamHttpMethod": [ "Delete" ],
+      "UpstreamPathTemplate": "/api/product/{id}",
+      "DownstreamPathTemplate": "/api/product/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamPathTemplate": "/api/product",
+      "DownstreamPathTemplate": "/api/product",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    // File
+    {
+      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamPathTemplate": "/api/file",
+      "DownstreamPathTemplate": "/api/file",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+
+    {
+      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamPathTemplate": "/api/product/GetEmployees",
+      "DownstreamPathTemplate": "/api/product/GetEmployees",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ]
+    },
+
+    {
+      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamPathTemplate": "/api/product/GetCategories",
+      "DownstreamPathTemplate": "/api/product/GetCategories",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ]
+    },
+
+    {
+      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamPathTemplate": "/api/product/GetDistricts",
+      "DownstreamPathTemplate": "/api/product/GetDistricts",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ]
+    },
+
+    {
+      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamPathTemplate": "/api/product/GetProvinceCities",
+      "DownstreamPathTemplate": "/api/product/GetProvinceCities",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ]
+    },
+    // Category
+    {
+      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamPathTemplate": "/api/category",
+      "DownstreamPathTemplate": "/api/category",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5002
+        }
+      ],
+
+      // The following item means:
+      // ClientWhitelist: Client có ip trong mảng này sẽ không bị ảnh hưởng bởi rate limiting. Clients listed here will be exempt from rate limiting. 
+      // EnableRateLimiting - bật tính năng rate limiting
+      // Period: This parameter defines the duration for which the limit is applicable, such as 1s (seconds), 5m (minutes), 1h (hours), and 1d (days).
+      // PeriodTimespan - sau số giây này chúng ta có thể gửi lại request .This parameter indicates the time in seconds after which a retry is permissible.
+      // Limit - xác định số lượng yêu cầu tối đa mà client có thể thực hiện trong một khoảng thời gian xác định.
+      "RateLimitOptions": {
+        "ClientWhitelist": [], // array of strings
+        "EnableRateLimiting": true,
+        "Period": "1s", // seconds, minutes, hours, days
+        "PeriodTimespan": 1, // only seconds
+        "Limit": 1
+      },
+      // The following item means:
+      // TtlSeconds: thời gian cache
+      // Region: đặt tên nhóm cache để xoá cache khi cần thiết
+      "FileCacheOptions": {
+        "TtlSeconds": 15,
+        "Region": "DUC84"
+      },
+      // The following item means:
+      // Nếu server không trả về response trong 2 giây, nó sẽ ném một exception.
+      // Nếu server ném ra một exception thứ 2, máy chủ sẽ không thể truy cập được trong 5 giây.
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 2,
+        "DurationOfBreak": 5000,
+        "TimeoutValue": 2000
+      }
+    },
+
+    {
+      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamPathTemplate": "/api/category/{id}",
+      "DownstreamPathTemplate": "/api/category/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5002
+        }
+      ]
+    },
+    {
+      "UpstreamHttpMethod": [ "Delete" ],
+      "UpstreamPathTemplate": "/api/category/{id}",
+      "DownstreamPathTemplate": "/api/category/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5002
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamPathTemplate": "/api/category",
+      "DownstreamPathTemplate": "/api/category",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5002
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+
+    // Employee
+    {
+      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamPathTemplate": "/api/employee",
+      "DownstreamPathTemplate": "/api/employee",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+
+      // The following item means:
+      // ClientWhitelist: Client có ip trong mảng này sẽ không bị ảnh hưởng bởi rate limiting. Clients listed here will be exempt from rate limiting. 
+      // EnableRateLimiting - bật tính năng rate limiting
+      // Period: This parameter defines the duration for which the limit is applicable, such as 1s (seconds), 5m (minutes), 1h (hours), and 1d (days).
+      // PeriodTimespan - sau số giây này chúng ta có thể gửi lại request .This parameter indicates the time in seconds after which a retry is permissible.
+      // Limit - xác định số lượng yêu cầu tối đa mà client có thể thực hiện trong một khoảng thời gian xác định.
+      "RateLimitOptions": {
+        "ClientWhitelist": [], // array of strings
+        "EnableRateLimiting": true,
+        "Period": "1s", // seconds, minutes, hours, days
+        "PeriodTimespan": 1, // only seconds
+        "Limit": 1
+      },
+      // The following item means:
+      // TtlSeconds: thời gian cache
+      // Region: đặt tên nhóm cache để xoá cache khi cần thiết
+      "FileCacheOptions": {
+        "TtlSeconds": 15,
+        "Region": "DUC84"
+      },
+      // The following item means:
+      // Nếu server không trả về response trong 2 giây, nó sẽ ném một exception.
+      // Nếu server ném ra một exception thứ 2, máy chủ sẽ không thể truy cập được trong 5 giây.
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 2,
+        "DurationOfBreak": 5000,
+        "TimeoutValue": 2000
+      }
+    },
+
+    {
+      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamPathTemplate": "/api/employee/{id}",
+      "DownstreamPathTemplate": "/api/employee/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ]
+    },
+    {
+      "UpstreamHttpMethod": [ "Delete" ],
+      "UpstreamPathTemplate": "/api/employee/{id}",
+      "DownstreamPathTemplate": "/api/employee/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamPathTemplate": "/api/employee",
+      "DownstreamPathTemplate": "/api/employee",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    // ProvinceCity
+    {
+      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamPathTemplate": "/api/provincecity",
+      "DownstreamPathTemplate": "/api/provincecity",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5004
+        }
+      ]
+    },
+
+    {
+      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamPathTemplate": "/api/provincecity/{id}",
+      "DownstreamPathTemplate": "/api/provincecity/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5004
+        }
+      ]
+    },
+    {
+      "UpstreamHttpMethod": [ "Delete" ],
+      "UpstreamPathTemplate": "/api/provincecity/{id}",
+      "DownstreamPathTemplate": "/api/provincecity/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5004
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamPathTemplate": "/api/provincecity",
+      "DownstreamPathTemplate": "/api/provincecity",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5004
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    }
+
+
+
+
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:7194"
+  }
+}
